@@ -1,0 +1,12 @@
+black==23.1.0
+
+gTTS
+openai
+
+git+https://github.com/openai/whisper.git
+SpeechRecognition
+pyaudio
+pydub
+--extra-index-url https://download.pytorch.org/whl/cu116
+torch 
+torchaudio

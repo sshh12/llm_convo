@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+ffcache*
+env.bat
+*.mp3
+*.wav
+test.py
