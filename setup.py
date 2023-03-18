@@ -8,7 +8,7 @@ setup(
     name="convo",
     version="0.0.0",
     description="",
-    url="https://github.com/sshh12/csgo-match-prediction",
+    url="https://github.com/sshh12/gpt-convo/blob/main/setup.py",
     author="Shrivu Shankar",
     license="MIT",
     packages=["convo"],
