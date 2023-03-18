@@ -2,6 +2,10 @@
 
 Use ChatGPT over Twilio to create an AI phone agent (works for incoming or outgoing calls).
 
+### How it works
+
+Twilio Webhook -> Flask app -> Twilio Media Stream (websocket) -> Whisper -> ChatGPT API -> Google TTS -> Twilio Play Audio
+
 ### Setup
 
 1. `pip install -r requirements.txt`
@@ -24,7 +28,6 @@ from gevent import monkey
 monkey.patch_all()
 
 from convo.agents import OpenAIChat, TwilioCaller
-from convo.audio_input import get_whisper_model
 from convo.twilio_io import TwilioServer
 from convo.conversation import run_conversation
 import logging
