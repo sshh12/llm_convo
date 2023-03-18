@@ -3,6 +3,7 @@ import os
 import tempfile
 import queue
 import functools
+import logging
 
 from pydub import AudioSegment
 import speech_recognition as sr
@@ -10,13 +11,14 @@ import whisper
 
 
 @functools.cache
-def get_wisper():
-    return whisper.load_model("large")
+def get_whisper_model(size: str = "large"):
+    logging.info(f"Loading whisper {size}")
+    return whisper.load_model(size)
 
 
 class WhisperMicrophone:
     def __init__(self):
-        self.audio_model = get_wisper()
+        self.audio_model = get_whisper_model()
         self.recognizer = sr.Recognizer()
         self.recognizer.energy_threshold = 500
         self.recognizer.pause_threshold = 0.8
@@ -24,7 +26,7 @@ class WhisperMicrophone:
 
     def get_transcription(self) -> str:
         with sr.Microphone(sample_rate=16000) as source:
-            print("Waiting for mic...")
+            logging.info("Waiting for mic...")
             with tempfile.TemporaryDirectory() as tmp:
                 tmp_path = os.path.join(tmp, "mic.wav")
                 audio = self.recognizer.listen(source)
@@ -51,26 +53,29 @@ class _TwilioSource(sr.AudioSource):
 
 
 class _QueueStream:
-    def __init__(self, q: queue.Queue):
-        self.q = q
+    def __init__(self):
+        self.q = queue.Queue(maxsize=-1)
 
     def read(self, chunk: int) -> bytes:
         return self.q.get()
 
+    def write(self, chunk: bytes):
+        self.q.put(chunk)
+
 
 class WhisperTwilioStream:
     def __init__(self):
-        self.audio_model = get_wisper()
+        self.audio_model = get_whisper_model()
         self.recognizer = sr.Recognizer()
-        self.recognizer.energy_threshold = 500
-        self.recognizer.pause_threshold = 1.5
+        self.recognizer.energy_threshold = 300
+        self.recognizer.pause_threshold = 2
         self.recognizer.dynamic_energy_threshold = False
         self.stream = None
 
     def get_transcription(self) -> str:
-        self.stream = queue.Queue(maxsize=-1)
-        with _TwilioSource(_QueueStream(self.stream)) as source:
-            print("Waiting for twilio...")
+        self.stream = _QueueStream()
+        with _TwilioSource(self.stream) as source:
+            logging.info("Waiting for twilio caller...")
             with tempfile.TemporaryDirectory() as tmp:
                 tmp_path = os.path.join(tmp, "mic.wav")
                 audio = self.recognizer.listen(source)
@@ -78,5 +83,6 @@ class WhisperTwilioStream:
                 audio_clip = AudioSegment.from_file(data)
                 audio_clip.export(tmp_path, format="wav")
                 result = self.audio_model.transcribe(tmp_path, language="english")
-            predicted_text = result["text"]
+        predicted_text = result["text"]
+        self.stream = None
         return predicted_text
