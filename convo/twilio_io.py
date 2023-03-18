@@ -37,7 +37,7 @@ class TwilioServer:
 
         account_sid = os.environ["TWILIO_ACCOUNT_SID"]
         auth_token = os.environ["TWILIO_AUTH_TOKEN"]
-        self.phone = os.environ["TWILIO_PHONE_NUMBER"]
+        self.from_phone = os.environ["TWILIO_PHONE_NUMBER"]
         self.client = Client(account_sid, auth_token)
 
         @self.app.route("/audio/<key>")
@@ -60,7 +60,7 @@ class TwilioServer:
         self.client.calls.create(
             twiml=XML_MEDIA_STREAM.format(host=self.remote_host),
             to=to_phone,
-            from_=to_phone,
+            from_=self.from_phone,
         )
 
     def _start(self):
