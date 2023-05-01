@@ -1,4 +1,4 @@
-# gpt-convo
+# llm_convo
 
 Use ChatGPT over Twilio to create an AI phone agent (works for incoming or outgoing calls).
 
@@ -8,7 +8,7 @@ Twilio Webhook -> Flask app -> Twilio Media Stream (websocket) -> Whisper -> Cha
 
 ### Setup
 
-1. `pip install -r requirements.txt`
+1. `pip install git+https://github.com/sshh12/llm_convo`
 2. Environment Variables
 
 ```
@@ -27,9 +27,9 @@ from gevent import monkey
 
 monkey.patch_all()
 
-from convo.agents import OpenAIChat, TwilioCaller
-from convo.twilio_io import TwilioServer
-from convo.conversation import run_conversation
+from llm_convo.agents import OpenAIChat, TwilioCaller
+from llm_convo.twilio_io import TwilioServer
+from llm_convo.conversation import run_conversation
 import logging
 import time
 
