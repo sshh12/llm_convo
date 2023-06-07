@@ -26,7 +26,6 @@ Setup a Haiku hotline with Twilio that can be called like any other phone number
 from gevent import monkey
 
 monkey.patch_all()
-
 from llm_convo.agents import OpenAIChat, TwilioCaller
 from llm_convo.twilio_io import TwilioServer
 from llm_convo.conversation import run_conversation
@@ -71,16 +70,15 @@ tws.on_session = run_chat
 # tws.start_call("+18321231234")
 ```
 
-# solv notes 
+# solv notes
 
 - need to `brew install portaudio`
 - install ngrok (brew)
 - run ngrok and configure twilio with ngrok url
 - pip install gevent python-dotenv twilio flask flask-sock
-- lots of typos (need llm_ in front of some things)
+- lots of typos (need llm\_ in front of some things)
 
-
-# instructions for setting up twilio webhook + ngrok 
+# instructions for setting up twilio webhook + ngrok
 
 To point your Twilio Voice webhook to an ngrok URL, follow these steps:
 
@@ -95,9 +93,11 @@ ngrok http 8000
 Replace 8000 with the port number where your local development server is running. Ensure that your local server is running before starting ngrok.
 
 3. Once ngrok is running, it will display a Forwarding URL. It should look something like this:
+
 ```
 Forwarding                    https://abcdef.ngrok.io -> http://localhost:8000
 ```
+
 Note the HTTPS URL provided by ngrok (https://abcdef.ngrok.io in this example).
 
 4. Go to the Twilio Console (https://www.twilio.com/console) and navigate to the phone number you want to configure.
@@ -108,6 +108,7 @@ Note the HTTPS URL provided by ngrok (https://abcdef.ngrok.io in this example).
 
 https://abcdef.ngrok.io/audio/incoming-voice
 ```
+
 Replace https://abcdef.ngrok.io with your ngrok URL and /audio/incoming-voice with the path to your voice webhook endpoint.
 
 6. Save the changes to apply the new webhook URL.
