@@ -70,3 +70,48 @@ tws.on_session = run_chat
 # You can also have ChatGPT actually start the call, e.g. for automated ordering
 # tws.start_call("+18321231234")
 ```
+
+# solv notes 
+
+- need to `brew install portaudio`
+- install ngrok (brew)
+- run ngrok and configure twilio with ngrok url
+- pip install gevent python-dotenv twilio flask flask-sock
+- lots of typos (need llm_ in front of some things)
+
+
+# instructions for setting up twilio webhook + ngrok 
+
+To point your Twilio Voice webhook to an ngrok URL, follow these steps:
+
+1. Install and set up ngrok on your local machine. Ngrok provides a secure tunnel to expose your local development server to the internet. You can download ngrok from the official website: https://ngrok.com/download.
+
+2. Start ngrok by running the following command in your terminal:
+
+```
+ngrok http 8000
+```
+
+Replace 8000 with the port number where your local development server is running. Ensure that your local server is running before starting ngrok.
+
+3. Once ngrok is running, it will display a Forwarding URL. It should look something like this:
+```
+Forwarding                    https://abcdef.ngrok.io -> http://localhost:8000
+```
+Note the HTTPS URL provided by ngrok (https://abcdef.ngrok.io in this example).
+
+4. Go to the Twilio Console (https://www.twilio.com/console) and navigate to the phone number you want to configure.
+
+5. In the Phone Number settings, locate the Voice section and find the "A CALL COMES IN" field. Enter the ngrok URL followed by the path to your voice webhook endpoint. For example:
+
+```
+
+https://abcdef.ngrok.io/audio/incoming-voice
+```
+Replace https://abcdef.ngrok.io with your ngrok URL and /audio/incoming-voice with the path to your voice webhook endpoint.
+
+6. Save the changes to apply the new webhook URL.
+
+Now, when a voice call comes to your Twilio phone number, Twilio will forward the call to the ngrok URL, which will then redirect it to your local development server running on the specified port.
+
+Remember that ngrok generates a temporary URL for each session, and it may change every time you restart ngrok. Make sure to update the webhook URL in the Twilio Console accordingly whenever you restart ngrok.

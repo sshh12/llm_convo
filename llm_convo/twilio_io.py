@@ -12,7 +12,7 @@ from flask_sock import Sock
 import simple_websocket
 import audioop
 
-from convo.audio_input import WhisperTwilioStream
+from llm_convo.audio_input import WhisperTwilioStream
 
 
 XML_MEDIA_STREAM = """
@@ -36,21 +36,38 @@ class TwilioServer:
         self.on_session = None
 
         account_sid = os.environ["TWILIO_ACCOUNT_SID"]
-        auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+        # auth_token = os.environ["TWILIO_AUTH_TOKEN"]
         self.from_phone = os.environ["TWILIO_PHONE_NUMBER"]
-        self.client = Client(account_sid, auth_token)
+        # self.client = Client(account_sid, auth_token)
+        api_key = os.environ["TWILIO_API_KEY"]  # might just be SID
+        api_secret = os.environ["TWILIO_API_SECRET"]  # dami gave
+        account_sid = os.environ["TWILIO_ACCOUNT_SID"]  # test from twilio
+        print("api_key: ", api_key)
+        print("api_secret: ", api_secret)
+        print("account_sid: ", account_sid)
+        self.client = Client(api_key, api_secret, account_sid)
 
         @self.app.route("/audio/<key>")
         def audio(key):
             return send_from_directory(self.static_dir, str(int(key)) + ".mp3")
 
+        @self.app.route("/test")
+        def test():
+            return "hello world"
+
         @self.app.route("/incoming-voice", methods=["POST"])
         def incoming_voice():
+            logging.info("Incoming call")
             return XML_MEDIA_STREAM.format(host=self.remote_host)
 
         @self.sock.route("/audiostream", websocket=True)
         def on_media_stream(ws):
-            session = TwilioCallSession(ws, self.client, remote_host=self.remote_host, static_dir=self.static_dir)
+            session = TwilioCallSession(
+                ws,
+                self.client,
+                remote_host=self.remote_host,
+                static_dir=self.static_dir,
+            )
             if self.on_session is not None:
                 thread = threading.Thread(target=self.on_session, args=(session,))
                 thread.start()

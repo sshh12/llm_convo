@@ -1,4 +1,4 @@
-from convo.agents import ChatAgent
+from llm_convo.agents import ChatAgent
 
 
 def run_conversation(agent_a: ChatAgent, agent_b: ChatAgent):
