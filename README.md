@@ -18,6 +18,7 @@ TWILIO_AUTH_TOKEN=
 TWILIO_PHONE_NUMBER=
 ```
 
+
 ### Demo
 
 #### Basic Text Chat
@@ -31,6 +32,8 @@ Try `python examples\twilio_ngrok_ml_rhyme_hotline.py --preload_whisper --start_
 This will create an ngrok tunnel and provide a webhook URL to point to in Twilio settings for a purchased phone number.
 
 <img width="1169" alt="chrome_VZSfJHN6FV" src="https://github.com/sshh12/llm_convo/assets/6625384/1fe9468d-0eb3-4309-9b81-1d2f3d02c353">
+
+https://github.com/sshh12/llm_convo/assets/6625384/cfd3826e-dd0a-44cd-936d-d6c339f1edcf
 
 #### Twilio Pizza Order
 
