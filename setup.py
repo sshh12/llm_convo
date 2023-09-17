@@ -5,10 +5,10 @@ with open("requirements.txt") as f:
 
 
 setup(
-    name="llm_convo",
+    name="llm_llm_convo",
     version="0.0.0",
     description="",
-    url="https://github.com/sshh12/llm_convo",
+    url="https://github.com/sshh12/llm_llm_convo",
     author="Shrivu Shankar",
     license="MIT",
     packages=find_packages(),

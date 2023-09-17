@@ -12,13 +12,33 @@ Twilio Webhook -> Flask app -> Twilio Media Stream (websocket) -> Whisper -> Cha
 2. Environment Variables
 
 ```
-OPENAI_KEY=
+OPENAI_API_KEY=
 TWILIO_ACCOUNT_SID=
 TWILIO_AUTH_TOKEN=
 TWILIO_PHONE_NUMBER=
 ```
 
 ### Demo
+
+#### Basic Text Chat
+
+Try `python examples\keyboard_chat_with_gpt.py` to chat with GPT through terminal.
+
+#### Twilio Helpline
+
+Try `python examples\twilio_ngrok_ml_rhyme_hotline.py --preload_whisper --start_ngrok`. This requires whisper installed locally.
+
+This will create an ngrok tunnel and provide a webhook URL to point to in Twilio settings for a purchased phone number.
+
+<img width="1169" alt="chrome_VZSfJHN6FV" src="https://github.com/sshh12/llm_convo/assets/6625384/1fe9468d-0eb3-4309-9b81-1d2f3d02c353">
+
+#### Twilio Pizza Order
+
+Try `python examples\twilio_ngrok_pizza_order.py --preload_whisper --start_ngrok --phone_number "+1.........."`. This requires whisper installed locally.
+
+This will create an ngrok tunnel and provide a webhook URL to point to in Twilio settings for a purchased phone number. Once the webhook is updated, it will start an outgoing call to the provided phone number.
+
+#### Code Snippets
 
 Setup a Haiku hotline with Twilio that can be called like any other phone number.
 

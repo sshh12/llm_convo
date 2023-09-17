@@ -12,7 +12,7 @@ from flask_sock import Sock
 import simple_websocket
 import audioop
 
-from convo.audio_input import WhisperTwilioStream
+from llm_convo.audio_input import WhisperTwilioStream
 
 
 XML_MEDIA_STREAM = """
