@@ -43,7 +43,7 @@ class TTSClient(ABC):
         )
         popen.wait()
         output = popen.stdout.read().decode("utf-8")
-        duration = float(output.split("=")[1].split("\r")[0])
+        duration = float(output.split("=")[1].replace("\r\n", "\n").split("\n")[0])
         return duration
 
 
